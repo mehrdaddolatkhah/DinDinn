@@ -48,9 +48,9 @@ object Utils {
 
     @SuppressLint("SimpleDateFormat")
     fun String.toMilliSeconds(): Long {
-        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy")
+        val df: DateFormat = SimpleDateFormat(ConstantValues.SIMPLE_DATE_FORMAT, Locale(this))
         return try {
-            val mDate: Date = sdf.parse(this) ?: Date()
+            val mDate: Date = df.parse(this) ?: Date()
             mDate.time
         } catch (e: ParseException) {
             e.printStackTrace()
@@ -60,9 +60,9 @@ object Utils {
 
     @SuppressLint("SimpleDateFormat")
     fun String.toSortTime(): String {
-        val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale(this))
+        val df: DateFormat = SimpleDateFormat(ConstantValues.SIMPLE_DATE_FORMAT, Locale(this))
         return try {
-            val date1: Date = df.parse(this)
+            val date1: Date = df.parse(this) ?: Date()
             val outputFormatter1: DateFormat = SimpleDateFormat("hh:mm aa")
             val output1: String = outputFormatter1.format(date1)
             output1

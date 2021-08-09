@@ -1,5 +1,6 @@
 package com.dindinn.app.domain.model
 
+import androidx.lifecycle.MutableLiveData
 import com.dindinn.app.util.Utils.toSortTime
 import com.google.gson.annotations.SerializedName
 
@@ -21,7 +22,9 @@ data class OrderDataDetails(
     @SerializedName("quantity") val quantity: Int?,
     @SerializedName("created_at") val createdAt: String?,
     @SerializedName("alerted_at") val alertedAt: String?,
-    @SerializedName("expired_at") val expiredAt: String?
+    @SerializedName("expired_at") val expiredAt: String?,
+
+    val orderCountDown: MutableLiveData<String>?
 ) {
     fun makeTimeShortForm(): String {
         return createdAt?.toSortTime() ?: ""

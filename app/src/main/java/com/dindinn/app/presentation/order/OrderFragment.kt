@@ -8,10 +8,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation.findNavController
 import com.dindinn.app.R
 import com.dindinn.app.databinding.FragmentOrderBinding
 import com.dindinn.app.databinding.ListItemOrderAddOnBinding
 import com.dindinn.app.databinding.ListItemOrderBinding
+import com.dindinn.app.domain.model.DindinnOrder
 import com.dindinn.app.domain.model.OrderAddOn
 import com.dindinn.app.domain.model.OrderDataDetails
 import com.dindinn.app.presentation.base.adapter.SingleLayoutAdapter
@@ -40,38 +42,60 @@ class OrderFragment : Fragment() {
 
     private fun observeOnLiveData() {
         viewModel.dindinnOrderLiveData.observe(viewLifecycleOwner, Observer {
-            fragmentOrderBinding.adapter =
-                SingleLayoutAdapter<OrderDataDetails, ListItemOrderBinding>(
-                    R.layout.list_item_order,
-                    it?.data ?: arrayListOf(),
-                    viewModel,
-                    onBind = {
-                        this.item?.orderAddOn?.let { addOn ->
+            setOrderAdapters(it)
+            handleOrderCountDown(it)
+        })
 
-                            when {
-                                addOn.size == 1 -> {
-                                    this.addonSize = "${addOn.size} item"
-                                }
-                                addOn.size > 1 -> {
-                                    this.addonSize = "${addOn.size} items"
-                                }
-                                else -> {
-                                    txtOrderItemCountValue.visibility = View.GONE
-                                }
-                            }
+        viewModel.callAlert.observe(viewLifecycleOwner, Observer {
 
-                            this.adapter =
-                                SingleLayoutAdapter<OrderAddOn, ListItemOrderAddOnBinding>(
-                                    R.layout.list_item_order_add_on,
-                                    addOn,
-                                    viewModel,
-                                    onBind = {
-                                    }
-                                )
-                        }
-                    }
-                )
+        })
+
+        viewModel.expireOrder.observe(viewLifecycleOwner, Observer {
+
+        })
+
+        viewModel.shouldNavigateToIngredientScreen.observe(viewLifecycleOwner, Observer {
+            if (it)
+                view?.let { it1 -> findNavController(it1).navigate(R.id.action_orderFragment_to_ingredientFragment) };
         })
     }
 
+    private fun setOrderAdapters(order: DindinnOrder) {
+        fragmentOrderBinding.adapter =
+            SingleLayoutAdapter<OrderDataDetails, ListItemOrderBinding>(
+                R.layout.list_item_order,
+                order.data ?: arrayListOf(),
+                viewModel,
+                onBind = {
+                    this.item?.orderAddOn?.let { addOn ->
+
+                        when {
+                            addOn.size == 1 -> {
+                                this.addonSize = "${addOn.size} item"
+                            }
+                            addOn.size > 1 -> {
+                                this.addonSize = "${addOn.size} items"
+                            }
+                            else -> {
+                                txtOrderItemCountValue.visibility = android.view.View.GONE
+                            }
+                        }
+
+                        this.adapter =
+                            SingleLayoutAdapter<OrderAddOn, ListItemOrderAddOnBinding>(
+                                R.layout.list_item_order_add_on,
+                                addOn,
+                                viewModel,
+                                onBind = {
+                                }
+                            )
+                    }
+                }
+            )
+    }
+
+    private fun handleOrderCountDown(order: DindinnOrder) {
+
+        viewModel.startGlobalTimer(order)
+    }
 }
