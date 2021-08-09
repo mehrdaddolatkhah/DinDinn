@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DinDinn</string>
+    <string name="text_order_auto_reject_second">S</string>
+    <string name="text_order_auto_reject">Auto reject</string>
+    <string name="text_order_at">at</string>
+    <string name="text_order_accept">Accept</string>
+    <string name="text_order_add_on_multiple">x</string>
+</resources>

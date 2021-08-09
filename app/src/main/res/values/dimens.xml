@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="text_size_xsmall">10sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_toolbar">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_snormal">14sp</dimen>
+    <dimen name="text_size_slarge">18sp</dimen>
+    <dimen name="text_size_large">21sp</dimen>
+    <dimen name="text_size_xlarge">24sp</dimen>
+
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_x_large">32dp</dimen>
+    <dimen name="margin_extra_large">48dp</dimen>
+    <dimen name="margin_xx_large">68dp</dimen>
+</resources>
