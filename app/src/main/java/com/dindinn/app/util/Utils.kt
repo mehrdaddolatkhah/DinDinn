@@ -9,15 +9,16 @@ import com.google.gson.reflect.TypeToken
 import io.reactivex.Single
 import java.io.IOException
 import java.io.InputStream
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 object Utils {
 
-    fun getJsonFromAssets(context: Context, fileName: String): String? {
+    private fun getJsonFromAssets(context: Context): String? {
         return try {
-            val `is`: InputStream = context.assets.open(fileName)
+            val `is`: InputStream = context.assets.open(ConstantValues.JSON_ORDER_NAME)
             val size: Int = `is`.available()
             val buffer = ByteArray(size)
             `is`.read(buffer)
@@ -32,7 +33,7 @@ object Utils {
     @SuppressLint("CheckResult")
     fun getLocalOrders(context: Context): Single<DindinnOrder> {
         val jsonFileString: String =
-            getJsonFromAssets(context, ConstantValues.JSON_ORDER_NAME) ?: ""
+            getJsonFromAssets(context) ?: ""
 
         var dindinnOrder: DindinnOrder? = null
 
@@ -54,6 +55,20 @@ object Utils {
         } catch (e: ParseException) {
             e.printStackTrace()
             0L
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun String.toSortTime(): String {
+        val df: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale(this))
+        return try {
+            val date1: Date = df.parse(this)
+            val outputFormatter1: DateFormat = SimpleDateFormat("hh:mm aa")
+            val output1: String = outputFormatter1.format(date1)
+            output1
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            ""
         }
     }
 }

@@ -29,17 +29,29 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txt_order_item_id"
+            android:id="@+id/txt_order_item_id_sign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
-            android:text="@{item.id.toString()}"
+            android:text="@string/text_order_id_sign"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_large"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="#576" />
+            tools:text="#" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_order_item_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@{item.id.toString()}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintStart_toEndOf="@+id/txt_order_item_id_sign"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="576" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txt_order_item_auto_reject_second"
@@ -97,7 +109,7 @@
             android:text="@string/text_order_at"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_snormal"
-            app:layout_constraintStart_toStartOf="@+id/txt_order_item_id"
+            app:layout_constraintStart_toStartOf="@+id/txt_order_item_id_sign"
             app:layout_constraintTop_toBottomOf="@+id/txt_order_item_id"
             tools:text="at" />
 
@@ -106,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@{item.createdAt.toString()}"
+            android:text="@{item.makeTimeShortForm}"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_snormal"
             app:layout_constraintBottom_toBottomOf="@+id/txt_order_item_created_at"
