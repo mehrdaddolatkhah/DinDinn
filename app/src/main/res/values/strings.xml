@@ -14,4 +14,5 @@
     <string name="text_ingredient_tab_main">Main</string>
     <string name="text_ingredient_tab_appetizer">Appetizer</string>
     <string name="text_ingredient_item_available">Available</string>
+    <string name="text_ingredient_empty">There is no item !</string>
 </resources>

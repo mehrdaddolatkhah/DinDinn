@@ -34,9 +34,7 @@ class IngredientFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
             DataBindingUtil.inflate(inflater, R.layout.fragment_ingredient, container, false)
         fragmentIngredientBinding.viewModel = viewModel
 
-        initTab()
         viewModel.getIngredientTabs()
-        viewModel.getIngredient(1)
         observeOnLiveData()
 
         fragmentIngredientBinding.recyclerIngredinet.layoutManager =
@@ -50,33 +48,11 @@ class IngredientFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
         return fragmentIngredientBinding.root
     }
 
-    private fun initTab() {
-        val tab1 = fragmentIngredientBinding.tabsIngredient.newTab()
-        tab1.contentDescription = getString(R.string.text_ingredient_tab_bento)
-        tab1.text = getString(R.string.text_ingredient_tab_bento)
-        val tab2 = fragmentIngredientBinding.tabsIngredient.newTab()
-        tab2.contentDescription = getString(R.string.text_ingredient_tab_main)
-        tab2.text = getString(R.string.text_ingredient_tab_main)
-        val tab3 = fragmentIngredientBinding.tabsIngredient.newTab()
-        tab3.contentDescription = getString(R.string.text_ingredient_tab_appetizer)
-        tab3.text = getString(R.string.text_ingredient_tab_appetizer)
-        fragmentIngredientBinding.tabsIngredient.addTab(tab1)
-        fragmentIngredientBinding.tabsIngredient.addTab(tab2)
-        fragmentIngredientBinding.tabsIngredient.addTab(tab3)
-        fragmentIngredientBinding.tabsIngredient.selectTab(tab1)
-        fragmentIngredientBinding.tabsIngredient.addOnTabSelectedListener(this)
-    }
-
     override fun onTabSelected(tab: TabLayout.Tab?) {
-        when (tab?.position) {
-            0 -> {
-                viewModel.getIngredient(1)
-            }
-            1 -> {
-                viewModel.getIngredient(2)
-            }
-            2 -> {
-                viewModel.getIngredient(3)
+
+        tab?.position?.let { selectedTabPosition ->
+            viewModel.ingredientTabList[selectedTabPosition].categoryId?.let { tabCategoryId ->
+                viewModel.getIngredient(tabCategoryId)
             }
         }
     }
@@ -103,6 +79,27 @@ class IngredientFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
                     }
                 )
 
+        })
+
+        viewModel.ingredientTabs.observe(viewLifecycleOwner, Observer { tabs ->
+            tabs.tabs.forEach { tabDetails ->
+                val tab = fragmentIngredientBinding.tabsIngredient.newTab()
+                tab.contentDescription = tabDetails.tabTitle
+                tab.text = tabDetails.tabTitle
+                fragmentIngredientBinding.tabsIngredient.addTab(tab)
+                viewModel.ingredientTabList.add(tabDetails)
+            }
+            fragmentIngredientBinding.tabsIngredient.addOnTabSelectedListener(this)
+        })
+
+        viewModel.shouldVisibleEmptyIngredientList.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                fragmentIngredientBinding.recyclerIngredinet.visibility = View.GONE
+                fragmentIngredientBinding.txtIngredientEmpty.visibility = View.VISIBLE
+            } else {
+                fragmentIngredientBinding.recyclerIngredinet.visibility = View.VISIBLE
+                fragmentIngredientBinding.txtIngredientEmpty.visibility = View.GONE
+            }
         })
     }
 
