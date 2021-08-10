@@ -23,8 +23,6 @@ class OrderViewModel @ViewModelInject constructor(
     val expireOrder = MutableLiveData(0)
     var globalTime = 0L
 
-    val shouldNavigateToIngredientScreen = MutableLiveData(false)
-
     fun getOrders() {
 
         fetchOrderUseCase.execute(
@@ -110,9 +108,5 @@ class OrderViewModel @ViewModelInject constructor(
                 }
 
         compositeDisposable.add(orderTimerDisposable)
-    }
-
-    fun navigateToIngredientScreen() {
-        shouldNavigateToIngredientScreen.value = true
     }
 }

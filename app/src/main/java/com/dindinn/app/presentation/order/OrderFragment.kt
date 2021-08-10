@@ -54,10 +54,12 @@ class OrderFragment : Fragment() {
 
         })
 
-        viewModel.shouldNavigateToIngredientScreen.observe(viewLifecycleOwner, Observer {
-            if (it)
-                view?.let { it1 -> findNavController(it1).navigate(R.id.action_orderFragment_to_ingredientFragment) };
-        })
+        fragmentOrderBinding.imgIngredient.setOnClickListener {
+            view?.let { view ->
+                findNavController(view).navigate(R.id.action_orderFragment_to_ingredientFragment)
+            }
+        }
+
     }
 
     private fun setOrderAdapters(order: DindinnOrder) {
