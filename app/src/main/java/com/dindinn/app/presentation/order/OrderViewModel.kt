@@ -23,6 +23,8 @@ class OrderViewModel @ViewModelInject constructor(
     val expireOrder = MutableLiveData(0)
     var globalTime = 0L
 
+    val shouldNotifyAdapter = MutableLiveData<Boolean>()
+
     fun getOrders() {
 
         fetchOrderUseCase.execute(
@@ -66,7 +68,7 @@ class OrderViewModel @ViewModelInject constructor(
         compositeDisposable.add(globalTimerDisposable)
     }
 
-    fun startOrderCountDown(orderDataDetails: OrderDataDetails) {
+    private fun startOrderCountDown(orderDataDetails: OrderDataDetails) {
         val orderTimerDisposable =
             Observable.interval(0, 1, TimeUnit.SECONDS)
                 .flatMap {
@@ -78,7 +80,10 @@ class OrderViewModel @ViewModelInject constructor(
 
                         val countDown = expiredAtInMilli - globalTime
 
-                        orderDataDetails.orderCountDown?.value =
+                        // todo : Mehrdad, update progressbar, handle onClick btn,
+                        //  handle remove item from order list, handle Observer in navigation and rewrite this section
+
+                        orderDataDetails.orderCountDown =
                             String.format(
                                 ConstantValues.COUNTDOWN_TIME_FORMAT,
                                 TimeUnit.MILLISECONDS.toMinutes(countDown),
@@ -91,6 +96,14 @@ class OrderViewModel @ViewModelInject constructor(
                             )
 
 
+                        if (expiredAtInMilli > globalTime) {
+                            orderDataDetails.btnOrderText = "Accept"
+                            orderDataDetails.isBtnOrderEnabled = true
+                        } else {
+                            orderDataDetails.btnOrderText = "Expired"
+                            orderDataDetails.isBtnOrderEnabled = false
+                        }
+
                         if (globalTime == alertAtInMilli) {
                             callAlert.postValue(orderDataDetails.id)
                         }
@@ -98,6 +111,8 @@ class OrderViewModel @ViewModelInject constructor(
                         if (globalTime == expiredAtInMilli) {
                             expireOrder.postValue(orderDataDetails.id)
                         }
+
+                        shouldNotifyAdapter.postValue(true)
 
                         emitter.onNext(globalTime)
                         emitter.onComplete()

@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
             android:max="100"
-            android:progress="0"
+            android:progress="@{item.progressProcess}"
             app:layout_constraintEnd_toEndOf="@+id/txt_order_item_auto_reject_second"
             app:layout_constraintStart_toStartOf="@+id/txt_order_item_auto_reject"
             app:layout_constraintTop_toBottomOf="@+id/txt_order_item_auto_reject_second" />
@@ -135,13 +135,14 @@
             android:layout_height="30dp"
             android:layout_marginTop="@dimen/margin_small"
             android:background="@drawable/shape_background_button_blue_small"
-            android:text="@string/text_order_accept"
+            android:enabled="@{item.isBtnOrderEnabled}"
+            android:text="@{item.btnOrderText}"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_snormal"
             app:layout_constraintEnd_toEndOf="@+id/progress_order"
             app:layout_constraintStart_toStartOf="@+id/progress_order"
             app:layout_constraintTop_toBottomOf="@+id/progress_order"
-            tools:text="Accept" />
+            tools:text="@string/text_order_accept" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_order_item_add_on"
