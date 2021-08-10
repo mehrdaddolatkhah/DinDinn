@@ -1,12 +1,13 @@
 {
   "category_id": 1,
   "category_name": "Bento",
-  "foods": [{
-    "name": "Hamburger",
-    "picture": "https://7esl.com/wp-content/uploads/2017/12/humburger-310x310.png",
-    "quantity": 10,
-    "is_available": true
-  },
+  "foods": [
+    {
+      "name": "Hamburger",
+      "picture": "https://7esl.com/wp-content/uploads/2017/12/humburger-310x310.png",
+      "quantity": 10,
+      "is_available": true
+    },
     {
       "name": "Hot dog",
       "picture": "https://7esl.com/wp-content/uploads/2017/12/hot-dog-310x310.png",

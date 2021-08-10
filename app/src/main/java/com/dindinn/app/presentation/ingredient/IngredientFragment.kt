@@ -39,7 +39,7 @@ class IngredientFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
         observeOnLiveData()
 
         fragmentIngredientBinding.recyclerIngredinet.layoutManager =
-            GridLayoutManager(requireContext(), 3)
+            GridLayoutManager(requireContext(), 2)
 
         fragmentIngredientBinding.swipeRefresh.setOnRefreshListener {
             // todo : handle swipe to refresh and shimmer

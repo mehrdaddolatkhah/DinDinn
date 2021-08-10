@@ -13,4 +13,5 @@
     <string name="text_ingredient_tab_bento">Bento</string>
     <string name="text_ingredient_tab_main">Main</string>
     <string name="text_ingredient_tab_appetizer">Appetizer</string>
+    <string name="text_ingredient_item_available">Available</string>
 </resources>

@@ -1,12 +1,13 @@
 {
   "category_id": 3,
   "category_name": "Appetizer",
-  "foods": [{
-    "name": "Ice cream",
-    "picture": "https://7esl.com/wp-content/uploads/2017/12/Ice-cream-150x150.png",
-    "quantity": 14,
-    "is_available": true
-  },
+  "foods": [
+    {
+      "name": "Ice cream",
+      "picture": "https://7esl.com/wp-content/uploads/2017/12/Ice-cream-150x150.png",
+      "quantity": 14,
+      "is_available": true
+    },
     {
       "name": "Cream",
       "picture": "https://7esl.com/wp-content/uploads/2017/12/Cream-150x150.png",

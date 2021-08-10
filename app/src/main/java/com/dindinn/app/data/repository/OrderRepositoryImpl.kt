@@ -1,16 +1,15 @@
 package com.dindinn.app.data.repository
 
-import android.content.Context
+import com.dindinn.app.data.source.remote.DinDinnService
 import com.dindinn.app.domain.model.DindinnOrder
 import com.dindinn.app.domain.repository.OrderRepository
-import com.dindinn.app.util.Utils
 import io.reactivex.Single
 
 class OrderRepositoryImpl(
-    private val context: Context
+    private val dinDinnService: DinDinnService
 ) : OrderRepository {
 
     override fun getDindinnOrders(): Single<DindinnOrder> {
-        return Utils.getLocalOrders(context)
+        return dinDinnService.getOrders()
     }
 }
