@@ -1,7 +1,9 @@
 package com.dindinn.app.di
 
 import android.content.Context
+import com.dindinn.app.data.repository.IngredientRepositoryImpl
 import com.dindinn.app.data.repository.OrderRepositoryImpl
+import com.dindinn.app.domain.repository.IngredientRepository
 import com.dindinn.app.domain.repository.OrderRepository
 import dagger.Module
 import dagger.Provides
@@ -20,5 +22,13 @@ class NetworkModule {
         @ApplicationContext context: Context
     ): OrderRepository {
         return OrderRepositoryImpl(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideIngredientRepository(
+        @ApplicationContext context: Context
+    ): IngredientRepository {
+        return IngredientRepositoryImpl(context)
     }
 }

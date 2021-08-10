@@ -1,0 +1,29 @@
+{
+  "category_id": 2,
+  "category_name": "Main",
+  "foods": [{
+    "name": "Kebab",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/kebab-150x150.png",
+    "quantity": 3,
+    "is_available": true
+  },
+    {
+      "name": "Seafood",
+      "picture": "https://7esl.com/wp-content/uploads/2017/12/seafood-150x150.png",
+      "quantity": 1,
+      "is_available": false
+    },
+    {
+      "name": "Bacon",
+      "picture": "https://7esl.com/wp-content/uploads/2017/12/bacon-1-150x150.png",
+      "quantity": 4,
+      "is_available": true
+    },
+    {
+      "name": "Sandwich",
+      "picture": "https://7esl.com/wp-content/uploads/2017/12/sandwich3-150x150.png",
+      "quantity": 19,
+      "is_available": true
+    }
+  ]
+}

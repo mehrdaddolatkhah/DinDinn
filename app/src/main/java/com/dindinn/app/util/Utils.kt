@@ -3,6 +3,7 @@ package com.dindinn.app.util
 import android.annotation.SuppressLint
 import android.content.Context
 import com.dindinn.app.domain.model.DindinnOrder
+import com.dindinn.app.domain.model.IngredientModel
 import com.dindinn.app.util.constants.ConstantValues
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -16,9 +17,9 @@ import java.util.*
 
 object Utils {
 
-    private fun getJsonFromAssets(context: Context): String? {
+    private fun getJsonFromAssets(context: Context, fileName: String): String? {
         return try {
-            val `is`: InputStream = context.assets.open(ConstantValues.JSON_ORDER_NAME)
+            val `is`: InputStream = context.assets.open(fileName)
             val size: Int = `is`.available()
             val buffer = ByteArray(size)
             `is`.read(buffer)
@@ -33,7 +34,7 @@ object Utils {
     @SuppressLint("CheckResult")
     fun getLocalOrders(context: Context): Single<DindinnOrder> {
         val jsonFileString: String =
-            getJsonFromAssets(context) ?: ""
+            getJsonFromAssets(context, ConstantValues.JSON_ORDER_NAME) ?: ""
 
         var dindinnOrder: DindinnOrder? = null
 
@@ -44,6 +45,34 @@ object Utils {
         dindinnOrder = gson.fromJson(jsonFileString, dindinnOrderType)
 
         return Single.just(dindinnOrder)
+    }
+
+    fun getLocalIngredient(context: Context, ingredientId: Int): Single<IngredientModel> {
+
+        val jsonFileString = when (ingredientId) {
+            1 -> {
+                getJsonFromAssets(context, ConstantValues.JSON_INGREDIENT_CATEGORY_ONE_NAME)
+            }
+            2 -> {
+                getJsonFromAssets(context, ConstantValues.JSON_INGREDIENT_CATEGORY_TWO_NAME)
+            }
+            3 -> {
+                getJsonFromAssets(context, ConstantValues.JSON_INGREDIENT_CATEGORY_THREE_NAME)
+            }
+            else -> {
+                getJsonFromAssets(context, ConstantValues.JSON_INGREDIENT_CATEGORY_ONE_NAME)
+            }
+        }
+
+        var ingredient: IngredientModel? = null
+
+        val gson = Gson()
+
+        val dindinnOrderType = object : TypeToken<IngredientModel>() {}.type
+
+        ingredient = gson.fromJson(jsonFileString, dindinnOrderType)
+
+        return Single.just(ingredient)
     }
 
     @SuppressLint("SimpleDateFormat")
