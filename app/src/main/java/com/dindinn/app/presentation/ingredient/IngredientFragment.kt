@@ -158,14 +158,14 @@ class IngredientFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
         }
         return textChangeObservable
             .filter { it.length >= 2 }
-            .debounce(2, TimeUnit.SECONDS)
+            .debounce(500, TimeUnit.MILLISECONDS)
     }
 
     override fun onStart() {
         super.onStart()
 
         val searchTextObservable = createTextChangeObservable()
-            .toFlowable(BackpressureStrategy.BUFFER)
+            .toFlowable(BackpressureStrategy.LATEST)
 
         disposable = searchTextObservable
             .observeOn(AndroidSchedulers.mainThread())
