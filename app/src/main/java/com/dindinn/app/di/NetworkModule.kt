@@ -5,10 +5,12 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import com.dindinn.app.data.repository.IngredientRepositoryImpl
 import com.dindinn.app.data.repository.OrderRepositoryImpl
+import com.dindinn.app.data.repository.SearchRepositoryImpl
 import com.dindinn.app.data.source.remote.DinDinnService
 import com.dindinn.app.data.source.remote.interceptor.MockRequestInterceptor
 import com.dindinn.app.domain.repository.IngredientRepository
 import com.dindinn.app.domain.repository.OrderRepository
+import com.dindinn.app.domain.repository.SearchRepository
 import com.dindinn.app.util.constants.ConstantValues
 import com.google.gson.Gson
 import dagger.Module
@@ -107,5 +109,13 @@ class NetworkModule {
         dinDinnService: DinDinnService
     ): IngredientRepository {
         return IngredientRepositoryImpl(dinDinnService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchRepository(
+        dinDinnService: DinDinnService
+    ): SearchRepository {
+        return SearchRepositoryImpl(dinDinnService)
     }
 }

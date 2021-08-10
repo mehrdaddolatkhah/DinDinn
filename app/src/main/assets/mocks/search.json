@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Hamburger",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/humburger-310x310.png",
+    "quantity": 10,
+    "is_available": true
+  },
+  {
+    "name": "Hot dog",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/hot-dog-310x310.png",
+    "quantity": 4,
+    "is_available": false
+  },
+  {
+    "name": "Pizza",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/pizza-310x310.png",
+    "quantity": 2,
+    "is_available": true
+  },
+  {
+    "name": "Kebab",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/kebab-150x150.png",
+    "quantity": 3,
+    "is_available": true
+  },
+  {
+    "name": "Seafood",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/seafood-150x150.png",
+    "quantity": 1,
+    "is_available": false
+  },
+  {
+    "name": "Bacon",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/bacon-1-150x150.png",
+    "quantity": 4,
+    "is_available": true
+  },
+  {
+    "name": "Sandwich",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/sandwich3-150x150.png",
+    "quantity": 19,
+    "is_available": true
+  },
+  {
+    "name": "Ice cream",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/Ice-cream-150x150.png",
+    "quantity": 14,
+    "is_available": true
+  },
+  {
+    "name": "Cream",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/Cream-150x150.png",
+    "quantity": 13,
+    "is_available": false
+  },
+  {
+    "name": "Yogurt",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/yogurt-150x150.png",
+    "quantity": 4,
+    "is_available": true
+  },
+  {
+    "name": "Sour cream",
+    "picture": "https://7esl.com/wp-content/uploads/2017/12/sour-cream-150x150.png",
+    "quantity": 6,
+    "is_available": true
+  }
+]

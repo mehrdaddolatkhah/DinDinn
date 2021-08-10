@@ -1,6 +1,7 @@
 package com.dindinn.app.data.source.remote
 
 import com.dindinn.app.domain.model.DindinnOrder
+import com.dindinn.app.domain.model.FoodModel
 import com.dindinn.app.domain.model.IngredientModel
 import com.dindinn.app.domain.model.TabModel
 import io.reactivex.Single
@@ -23,4 +24,8 @@ interface DinDinnService {
     @Headers("mocks:true")
     @GET("/api/ingredient_tabs")
     fun getIngredientTabs(): Single<TabModel>
+
+    @Headers("mocks:true")
+    @GET("/api/search")
+    fun getAllItemForSearch(): Single<List<FoodModel>>
 }
