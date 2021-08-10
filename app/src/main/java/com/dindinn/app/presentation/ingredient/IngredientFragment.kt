@@ -35,6 +35,7 @@ class IngredientFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
         fragmentIngredientBinding.viewModel = viewModel
 
         initTab()
+        viewModel.getIngredientTabs()
         viewModel.getIngredient(1)
         observeOnLiveData()
 

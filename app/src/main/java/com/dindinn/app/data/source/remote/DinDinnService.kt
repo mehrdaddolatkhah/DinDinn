@@ -2,6 +2,7 @@ package com.dindinn.app.data.source.remote
 
 import com.dindinn.app.domain.model.DindinnOrder
 import com.dindinn.app.domain.model.IngredientModel
+import com.dindinn.app.domain.model.TabModel
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -18,4 +19,8 @@ interface DinDinnService {
     fun getIngredient(
         @Path("category_id") categoryId: Int
     ): Single<IngredientModel>
+
+    @Headers("mocks:true")
+    @GET("/api/ingredient_tabs")
+    fun getIngredientTabs(): Single<TabModel>
 }

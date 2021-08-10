@@ -8,8 +8,7 @@ import javax.inject.Inject
 
 class FetchOrderUseCase @Inject constructor(
     private val orderRepository: OrderRepository
-) :
-    SingleUseCase<DindinnOrder>() {
+) : SingleUseCase<DindinnOrder>() {
 
     override fun buildUseCaseSingle(): Single<DindinnOrder> {
         return orderRepository.getDindinnOrders()

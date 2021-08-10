@@ -1,0 +1,17 @@
+{
+  "tab_count": 3,
+  "tabs": [
+    {
+      "category_id": 1,
+      "tab_title": "Bento"
+    },
+    {
+      "category_id": 2,
+      "tab_title": "Main"
+    },
+    {
+      "category_id": 3,
+      "tab_title": "Appetizer"
+    }
+  ]
+}
