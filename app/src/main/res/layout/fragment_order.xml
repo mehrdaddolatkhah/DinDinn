@@ -11,7 +11,7 @@
 
         <variable
             name="adapter"
-            type="com.dindinn.app.presentation.base.adapter.SingleLayoutAdapter" />
+            type="com.dindinn.app.presentation.order.adapter.OrderAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

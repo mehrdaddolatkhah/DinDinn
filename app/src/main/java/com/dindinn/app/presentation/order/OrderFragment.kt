@@ -13,19 +13,18 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation.findNavController
 import com.dindinn.app.R
 import com.dindinn.app.databinding.FragmentOrderBinding
-import com.dindinn.app.databinding.ListItemOrderAddOnBinding
-import com.dindinn.app.databinding.ListItemOrderBinding
-import com.dindinn.app.domain.model.DindinnOrder
-import com.dindinn.app.domain.model.OrderAddOn
 import com.dindinn.app.domain.model.OrderDataDetails
-import com.dindinn.app.presentation.base.adapter.SingleLayoutAdapter
+import com.dindinn.app.presentation.main.MainViewModel
+import com.dindinn.app.presentation.order.adapter.OrderAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 @AndroidEntryPoint
 class OrderFragment : Fragment() {
 
     private lateinit var fragmentOrderBinding: FragmentOrderBinding
     private val viewModel: OrderViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +35,6 @@ class OrderFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
         fragmentOrderBinding.viewModel = viewModel
 
-        initAdapter()
         viewModel.getOrders()
         observeOnLiveData()
 
@@ -46,21 +44,20 @@ class OrderFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun observeOnLiveData() {
         viewModel.dindinnOrderLiveData.observe(viewLifecycleOwner, Observer { order ->
-            order.data?.let { data -> fragmentOrderBinding.adapter?.swapItems(data) }
-            handleOrderCountDown(order)
+            fragmentOrderBinding.adapter =
+                OrderAdapter(
+                    (order.data ?: arrayListOf()) as ArrayList<OrderDataDetails>,
+                    viewModel,
+                    mainViewModel
+                ) {
+                    runOnUiThread {
+                        viewModel.shouldNotifyAdapter.value = true
+                    }
+                }
         })
 
         viewModel.callAlert.observe(viewLifecycleOwner, Observer { id ->
             // todo : Mehrdad make alert
-            viewModel.dindinnOrderLiveData.value?.data?.forEachIndexed { index, orderDataDetails ->
-                if (id == orderDataDetails.id) {
-                    fragmentOrderBinding.recyclerOrder[index]
-                }
-            }
-        })
-
-        viewModel.expireOrder.observe(viewLifecycleOwner, Observer { id ->
-            // todo : Mehrdad remove Observer
             viewModel.dindinnOrderLiveData.value?.data?.forEachIndexed { index, orderDataDetails ->
                 if (id == orderDataDetails.id) {
                     fragmentOrderBinding.recyclerOrder[index]
@@ -80,43 +77,5 @@ class OrderFragment : Fragment() {
             }
         }
 
-    }
-
-    private fun handleOrderCountDown(order: DindinnOrder) {
-        viewModel.startGlobalTimer(order)
-    }
-
-    private fun initAdapter() {
-        fragmentOrderBinding.adapter =
-            SingleLayoutAdapter<OrderDataDetails, ListItemOrderBinding>(
-                R.layout.list_item_order,
-                arrayListOf(),
-                viewModel,
-                onBind = {
-                    this.item?.orderAddOn?.let { addOn ->
-
-                        when {
-                            addOn.size == 1 -> {
-                                this.addonSize = "${addOn.size} item"
-                            }
-                            addOn.size > 1 -> {
-                                this.addonSize = "${addOn.size} items"
-                            }
-                            else -> {
-                                txtOrderItemCountValue.visibility = android.view.View.GONE
-                            }
-                        }
-
-                        this.adapter =
-                            SingleLayoutAdapter<OrderAddOn, ListItemOrderAddOnBinding>(
-                                R.layout.list_item_order_add_on,
-                                addOn,
-                                viewModel,
-                                onBind = {
-                                }
-                            )
-                    }
-                }
-            )
     }
 }

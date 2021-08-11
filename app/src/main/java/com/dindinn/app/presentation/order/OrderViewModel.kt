@@ -3,14 +3,8 @@ package com.dindinn.app.presentation.order
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import com.dindinn.app.domain.model.DindinnOrder
-import com.dindinn.app.domain.model.OrderDataDetails
 import com.dindinn.app.domain.usecase.FetchOrderUseCase
 import com.dindinn.app.presentation.base.BaseViewModel
-import com.dindinn.app.util.Utils.toMilliSeconds
-import com.dindinn.app.util.constants.ConstantValues
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
 
 
 class OrderViewModel @ViewModelInject constructor(
@@ -20,13 +14,10 @@ class OrderViewModel @ViewModelInject constructor(
 
     val dindinnOrderLiveData = MutableLiveData<DindinnOrder>()
     val callAlert = MutableLiveData(0)
-    val expireOrder = MutableLiveData(0)
-    var globalTime = 0L
 
     val shouldNotifyAdapter = MutableLiveData<Boolean>()
 
     fun getOrders() {
-
         fetchOrderUseCase.execute(
             onSuccess = {
                 dindinnOrderLiveData.value = it
@@ -35,93 +26,5 @@ class OrderViewModel @ViewModelInject constructor(
                 it.printStackTrace()
             }
         )
-    }
-
-    fun startGlobalTimer(order: DindinnOrder) {
-        val globalTimerDisposable =
-            Observable.interval(0, 1, TimeUnit.SECONDS)
-                .flatMap {
-                    return@flatMap Observable.create<Long> { emitter ->
-
-                        if (globalTime == 0L) {
-                            globalTime = ConstantValues.FIXED_START_TIME
-                        }
-
-                        emitter.onNext(globalTime)
-                        emitter.onComplete()
-                    }
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-
-                    order.data?.forEach { orderDetails ->
-                        if (orderDetails.createdAt?.toMilliSeconds() == globalTime) {
-                            startOrderCountDown(
-                                orderDetails
-                            )
-                        }
-                    }
-
-                    globalTime += 1000
-                }
-
-        compositeDisposable.add(globalTimerDisposable)
-    }
-
-    private fun startOrderCountDown(orderDataDetails: OrderDataDetails) {
-        val orderTimerDisposable =
-            Observable.interval(0, 1, TimeUnit.SECONDS)
-                .flatMap {
-                    return@flatMap Observable.create<Long> { emitter ->
-
-                        val createdAtInMilli = orderDataDetails.createdAt?.toMilliSeconds() ?: 0L
-                        val alertAtInMilli = orderDataDetails.alertedAt?.toMilliSeconds() ?: 0L
-                        val expiredAtInMilli = orderDataDetails.expiredAt?.toMilliSeconds() ?: 0L
-
-                        val countDown = expiredAtInMilli - globalTime
-
-                        // todo : Mehrdad, update progressbar, handle onClick btn,
-                        //  handle remove item from order list, handle Observer in navigation and rewrite this section
-
-                        orderDataDetails.orderCountDown =
-                            String.format(
-                                ConstantValues.COUNTDOWN_TIME_FORMAT,
-                                TimeUnit.MILLISECONDS.toMinutes(countDown),
-                                TimeUnit.MILLISECONDS.toSeconds(countDown) -
-                                        TimeUnit.MINUTES.toSeconds(
-                                            TimeUnit.MILLISECONDS.toMinutes(
-                                                countDown
-                                            )
-                                        )
-                            )
-
-
-                        if (expiredAtInMilli > globalTime) {
-                            orderDataDetails.btnOrderText = "Accept"
-                            orderDataDetails.isBtnOrderEnabled = true
-                        } else {
-                            orderDataDetails.btnOrderText = "Expired"
-                            orderDataDetails.isBtnOrderEnabled = false
-                        }
-
-                        if (globalTime == alertAtInMilli) {
-                            callAlert.postValue(orderDataDetails.id)
-                        }
-
-                        if (globalTime == expiredAtInMilli) {
-                            expireOrder.postValue(orderDataDetails.id)
-                        }
-
-                        shouldNotifyAdapter.postValue(true)
-
-                        emitter.onNext(globalTime)
-                        emitter.onComplete()
-                    }
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                }
-
-        compositeDisposable.add(orderTimerDisposable)
     }
 }
