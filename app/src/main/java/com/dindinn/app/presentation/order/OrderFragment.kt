@@ -24,6 +24,12 @@ class OrderFragment : Fragment() {
     private val viewModel: OrderViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getOrders()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,10 +38,7 @@ class OrderFragment : Fragment() {
         fragmentOrderBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
         fragmentOrderBinding.viewModel = viewModel
-
-        viewModel.getOrders()
         observeOnLiveData()
-
         return fragmentOrderBinding.root
     }
 

@@ -11,12 +11,13 @@ import java.util.concurrent.TimeUnit
 class MainViewModel : BaseViewModel() {
 
     private var globalTimeValue = 0L
+    lateinit var globalTimeObservable: Observable<Long>
 
     @SuppressLint("CheckResult")
     fun globalTimerObservable(): Observable<Long> {
         return Observable.interval(0, 1, TimeUnit.SECONDS)
             .flatMap {
-                return@flatMap Observable.create<Long> { emitter ->
+                globalTimeObservable = Observable.create<Long> { emitter ->
 
                     if (globalTimeValue == 0L) {
                         globalTimeValue = ConstantValues.FIXED_START_TIME
@@ -29,6 +30,17 @@ class MainViewModel : BaseViewModel() {
                 }
                     .observeOn(Schedulers.io())
                     .subscribeOn(AndroidSchedulers.mainThread())
+
+                return@flatMap globalTimeObservable
             }
+    }
+
+
+    @SuppressLint("CheckResult")
+    override fun onCleared() {
+        super.onCleared()
+        if (::globalTimeObservable.isInitialized) {
+            globalTimeObservable.unsubscribeOn(Schedulers.io())
+        }
     }
 }

@@ -36,31 +36,53 @@ class OrderAdapter(
         return R.layout.list_item_order
     }
 
+
     override fun getItemCount(): Int {
         return items.size
     }
 
-    @SuppressLint("CheckResult", "NotifyDataSetChanged", "SetTextI18n")
     override fun onBindViewHolder(
         holder: BaseViewHolder<OrderDataDetails, ListItemOrderBinding>,
         position: Int
     ) {
 
+        holder.binding.position = position
+        super.onBindViewHolder(holder, position)
+    }
+
+    private fun removeOrder(position: Int) {
+        if (items.size > 0) {
+            items.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, items.size)
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewDetachedFromWindow(holder: BaseViewHolder<OrderDataDetails, ListItemOrderBinding>) {
+        holder.binding.disposable?.dispose()
+        super.onViewDetachedFromWindow(holder)
+    }
+
+    @SuppressLint("CheckResult", "SetTextI18n")
+    override fun onViewAttachedToWindow(holder: BaseViewHolder<OrderDataDetails, ListItemOrderBinding>) {
         var orderDispose: Disposable? = null
 
         val globalTimerObservable = mainViewModel.globalTimerObservable()
         globalTimerObservable
+            .subscribeOn(Schedulers.io())
             .subscribe {
                 globalTime = it
             }
 
-        orderDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
+        orderDispose = Observable
+            .interval(0, 1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
 
                 if (items.size != 0) {
-                    val orderDetails = items[position]
+                    val orderDetails = items[holder.binding.position]
 
                     // todo : create function and make modular this section
                     if (orderDetails.createdAt?.toMilliSeconds()!! <= globalTime &&
@@ -85,7 +107,7 @@ class OrderAdapter(
                     if (orderDetails.expiredAt?.toMilliSeconds()!! <= globalTime) {
                         holder.binding.btnOrderItemAccept.text = "Expired"
                         holder.binding.btnOrderItemAccept.isEnabled = false
-                        //orderDispose?.let { removeOrder(it, position) }
+                        removeOrder(holder.binding.position)
 
                     } else {
                         holder.binding.btnOrderItemAccept.text = "Accept"
@@ -95,10 +117,10 @@ class OrderAdapter(
             }
 
         holder.binding.btnOrderItemAccept.setOnClickListener {
-            //orderDispose?.let { removeOrder(it, position) }
+            removeOrder(holder.binding.position)
         }
 
-        items[position].orderAddOn?.let { addOn ->
+        items[holder.binding.position].orderAddOn?.let { addOn ->
 
             when {
                 addOn.size == 1 -> {
@@ -120,15 +142,7 @@ class OrderAdapter(
                 )
         }
 
-        super.onBindViewHolder(holder, position)
-    }
-
-    private fun removeOrder(orderDispose: Disposable, position: Int) {
-        if (!orderDispose.isDisposed && items.size > 0) {
-            orderDispose.dispose()
-            items.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, items.size)
-        }
+        holder.binding.disposable = orderDispose
+        super.onViewAttachedToWindow(holder)
     }
 }

@@ -22,6 +22,14 @@
             name="addonSize"
             type="String" />
 
+        <variable
+            name="disposable"
+            type="io.reactivex.disposables.Disposable" />
+
+        <variable
+            name="position"
+            type="int" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
