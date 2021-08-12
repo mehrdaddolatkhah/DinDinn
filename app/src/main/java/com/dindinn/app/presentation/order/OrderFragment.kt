@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,7 +16,6 @@ import com.dindinn.app.domain.model.OrderDataDetails
 import com.dindinn.app.presentation.main.MainViewModel
 import com.dindinn.app.presentation.order.adapter.OrderAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import org.jetbrains.anko.support.v4.runOnUiThread
 
 @AndroidEntryPoint
 class OrderFragment : Fragment() {
@@ -41,6 +39,7 @@ class OrderFragment : Fragment() {
         return fragmentOrderBinding.root
     }
 
+
     @SuppressLint("NotifyDataSetChanged")
     private fun observeOnLiveData() {
         viewModel.dindinnOrderLiveData.observe(viewLifecycleOwner, Observer { order ->
@@ -49,26 +48,11 @@ class OrderFragment : Fragment() {
                     (order.data ?: arrayListOf()) as ArrayList<OrderDataDetails>,
                     viewModel,
                     mainViewModel
-                ) {
-                    runOnUiThread {
-                        viewModel.shouldNotifyAdapter.value = true
-                    }
-                }
+                )
         })
 
         viewModel.callAlert.observe(viewLifecycleOwner, Observer { id ->
             // todo : Mehrdad make alert
-            viewModel.dindinnOrderLiveData.value?.data?.forEachIndexed { index, orderDataDetails ->
-                if (id == orderDataDetails.id) {
-                    fragmentOrderBinding.recyclerOrder[index]
-                }
-            }
-        })
-
-        viewModel.shouldNotifyAdapter.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                fragmentOrderBinding.adapter?.notifyDataSetChanged()
-            }
         })
 
         fragmentOrderBinding.imgIngredient.setOnClickListener {

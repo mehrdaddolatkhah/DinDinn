@@ -1,7 +1,6 @@
 package com.dindinn.app.presentation.order.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.dindinn.app.R
 import com.dindinn.app.databinding.ListItemOrderAddOnBinding
 import com.dindinn.app.databinding.ListItemOrderBinding
@@ -24,11 +23,9 @@ import java.util.concurrent.TimeUnit
 class OrderAdapter(
     private val items: ArrayList<OrderDataDetails>,
     private val viewModel: OrderViewModel,
-    private val mainViewModel: MainViewModel,
-    private val onNotifyAdapter: () -> Unit
+    private val mainViewModel: MainViewModel
 ) : BaseAdapter<OrderDataDetails, ListItemOrderBinding>() {
 
-    private lateinit var orderDispose: Disposable
     var globalTime = 0L
 
     override fun getDefaultViewModel(): BaseViewModel? = viewModel
@@ -48,6 +45,9 @@ class OrderAdapter(
         holder: BaseViewHolder<OrderDataDetails, ListItemOrderBinding>,
         position: Int
     ) {
+
+        var orderDispose: Disposable? = null
+
         val globalTimerObservable = mainViewModel.globalTimerObservable()
         globalTimerObservable
             .subscribe {
@@ -55,54 +55,47 @@ class OrderAdapter(
             }
 
         orderDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
-            .flatMap {
-                return@flatMap Observable.create<OrderDataDetails> { emitter ->
-                    emitter.onNext(items[position])
-                    emitter.onComplete()
-                }
-            }
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe { orderDetails ->
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
 
-                // todo : create function and make modular this section
-                if (orderDetails.createdAt?.toMilliSeconds()!! <= globalTime &&
-                    orderDetails.expiredAt?.toMilliSeconds()!! >= globalTime
-                ) {
-                    val countDown = orderDetails.expiredAt.toMilliSeconds() - globalTime
+                if (items.size != 0) {
+                    val orderDetails = items[position]
 
-                    orderDetails.orderCountDown =
-                        String.format(
-                            ConstantValues.COUNTDOWN_TIME_FORMAT,
-                            TimeUnit.MILLISECONDS.toMinutes(countDown),
-                            TimeUnit.MILLISECONDS.toSeconds(countDown) -
-                                    TimeUnit.MINUTES.toSeconds(
-                                        TimeUnit.MILLISECONDS.toMinutes(
-                                            countDown
+                    // todo : create function and make modular this section
+                    if (orderDetails.createdAt?.toMilliSeconds()!! <= globalTime &&
+                        orderDetails.expiredAt?.toMilliSeconds()!! >= globalTime
+                    ) {
+                        val countDown = orderDetails.expiredAt.toMilliSeconds() - globalTime
+
+                        holder.binding.txtOrderItemAutoRejectSecondValue.text =
+                            String.format(
+                                ConstantValues.COUNTDOWN_TIME_FORMAT,
+                                TimeUnit.MILLISECONDS.toMinutes(countDown),
+                                TimeUnit.MILLISECONDS.toSeconds(countDown) -
+                                        TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(
+                                                countDown
+                                            )
                                         )
-                                    )
-                        )
+                            )
+                    }
 
-                    Log.d("Mehrdad", orderDetails.orderCountDown.toString())
+
+                    if (orderDetails.expiredAt?.toMilliSeconds()!! <= globalTime) {
+                        holder.binding.btnOrderItemAccept.text = "Expired"
+                        holder.binding.btnOrderItemAccept.isEnabled = false
+                        //orderDispose?.let { removeOrder(it, position) }
+
+                    } else {
+                        holder.binding.btnOrderItemAccept.text = "Accept"
+                        holder.binding.btnOrderItemAccept.isEnabled = true
+                    }
                 }
-
-
-                if (orderDetails.expiredAt?.toMilliSeconds()!! <= globalTime) {
-                    orderDetails.isBtnOrderEnabled = false
-                    orderDetails.btnOrderText = "Expired"
-                    //removeItem(position)
-                } else {
-                    orderDetails.isBtnOrderEnabled = true
-                    orderDetails.btnOrderText = "Accept"
-                }
-
-                // todo : when call onNotifyAdapter, countDown is very fast !!! check this section too
-                onNotifyAdapter.invoke()
             }
 
-        // todo : check why setOnClickListener wont work
         holder.binding.btnOrderItemAccept.setOnClickListener {
-            removeItem(position)
+            //orderDispose?.let { removeOrder(it, position) }
         }
 
         items[position].orderAddOn?.let { addOn ->
@@ -130,9 +123,8 @@ class OrderAdapter(
         super.onBindViewHolder(holder, position)
     }
 
-    // todo : fix remove item issue
-    private fun removeItem(position: Int) {
-        if (!orderDispose.isDisposed && items.size != 0) {
+    private fun removeOrder(orderDispose: Disposable, position: Int) {
+        if (!orderDispose.isDisposed && items.size > 0) {
             orderDispose.dispose()
             items.removeAt(position)
             notifyItemRemoved(position)

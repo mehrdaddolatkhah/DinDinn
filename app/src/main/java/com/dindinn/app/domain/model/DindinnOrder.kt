@@ -22,11 +22,6 @@ data class OrderDataDetails(
     @SerializedName("created_at") val createdAt: String?,
     @SerializedName("alerted_at") val alertedAt: String?,
     @SerializedName("expired_at") val expiredAt: String?,
-
-    @Transient var orderCountDown: String?,
-    @Transient var btnOrderText: String?,
-    @Transient var isBtnOrderEnabled: Boolean?,
-    @Transient var progressProcess: Int?
 ) {
     fun makeTimeShortForm(): String {
         return createdAt?.toSortTime() ?: ""

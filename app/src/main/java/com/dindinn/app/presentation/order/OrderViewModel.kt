@@ -15,14 +15,13 @@ class OrderViewModel @ViewModelInject constructor(
     val dindinnOrderLiveData = MutableLiveData<DindinnOrder>()
     val callAlert = MutableLiveData(0)
 
-    val shouldNotifyAdapter = MutableLiveData<Boolean>()
-
     fun getOrders() {
         fetchOrderUseCase.execute(
             onSuccess = {
                 dindinnOrderLiveData.value = it
             },
             onError = {
+                // todo : handle error
                 it.printStackTrace()
             }
         )
