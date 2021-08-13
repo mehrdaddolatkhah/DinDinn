@@ -23,7 +23,7 @@ object Utils {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun String.toSortTime(): String {
+    fun String.toShortTime(): String {
         val df: DateFormat = SimpleDateFormat(ConstantValues.SIMPLE_DATE_FORMAT, Locale(this))
         return try {
             val date1: Date = df.parse(this) ?: Date()

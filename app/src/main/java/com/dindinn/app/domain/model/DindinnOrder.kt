@@ -1,6 +1,6 @@
 package com.dindinn.app.domain.model
 
-import com.dindinn.app.util.Utils.toSortTime
+import com.dindinn.app.util.Utils.toShortTime
 import com.google.gson.annotations.SerializedName
 
 data class DindinnOrder(
@@ -24,7 +24,7 @@ data class OrderDataDetails(
     @SerializedName("expired_at") val expiredAt: String?,
 ) {
     fun makeTimeShortForm(): String {
-        return createdAt?.toSortTime() ?: ""
+        return createdAt?.toShortTime() ?: ""
     }
 }
 
