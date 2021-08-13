@@ -139,6 +139,8 @@ class IngredientFragment : BaseFragment(), TabLayout.OnTabSelectedListener {
                 override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                     s?.toString()?.let {
                         if (it.isEmpty()) {
+                            // todo : if we clear editText value fast recycler items won't update,
+                            //  (search value will disappear either editText is empty )
                             resetSearch()
                         } else {
                             if (viewModel.shouldVisibleEmptyIngredientList.value == true)

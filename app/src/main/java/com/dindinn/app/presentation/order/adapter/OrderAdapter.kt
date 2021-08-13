@@ -82,6 +82,8 @@ class OrderAdapter(
             .subscribe {
 
                 if (items.size != 0) {
+                    // todo : pass data here inside chain . sometimes exception occurred
+                    // Caused by: java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
                     val orderDetails = items[holder.binding.position]
 
                     // todo : create function and make modular this section
