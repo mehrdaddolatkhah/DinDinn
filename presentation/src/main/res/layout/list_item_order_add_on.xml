@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.dindinn.presentation.order.OrderViewModel" />
+
+        <variable
+            name="item"
+            type="com.dindinn.domain.model.OrderAddOn" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_order_add_on_multiple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/text_order_add_on_multiple"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_snormal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="x" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_order_add_on_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:text="@{item.quantity.toString()}"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_order_add_on_multiple"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_order_add_on_multiple"
+            tools:text="2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_order_add_on_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:text="@{item.title}"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_order_add_on_count"
+            app:layout_constraintStart_toEndOf="@+id/txt_order_add_on_count"
+            app:layout_constraintTop_toTopOf="@+id/txt_order_add_on_count"
+            tools:text="Nasi Lemak" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DinDinn">
         <activity
-            android:name="com.dindinn.app.presentation.main.MainActivity"
+            android:name="com.dindinn.presentation.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

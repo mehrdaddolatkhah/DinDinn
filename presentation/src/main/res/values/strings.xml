@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">DinDinn</string>
+    <string name="text_order_auto_reject_second">S</string>
+    <string name="text_order_auto_reject">Auto reject</string>
+    <string name="text_order_at">at</string>
+    <string name="text_order_accept">Accept</string>
+    <string name="text_order_add_on_multiple">x</string>
+    <string name="text_order_id_sign">#</string>
+    <string name="text_ingredient_search_hint">Search for an Item</string>
+
+
+    <!-- ingredient tab section -->
+    <string name="text_ingredient_tab_bento">Bento</string>
+    <string name="text_ingredient_tab_main">Main</string>
+    <string name="text_ingredient_tab_appetizer">Appetizer</string>
+    <string name="text_ingredient_item_available">Available</string>
+    <string name="text_ingredient_empty">There is no item !</string>
+</resources>
