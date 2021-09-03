@@ -1,6 +1,6 @@
 package com.dindinn.app.util
 
-import com.dindinn.app.util.Utils.toMilliSeconds
+import com.dindinn.domain.util.Utils.toMilliSeconds
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.IsInstanceOf
