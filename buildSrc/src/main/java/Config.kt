@@ -105,7 +105,6 @@ object TestLibs {
         const val google_truth_version = "1.0"
         const val mockito_version = "3.1.0"
         const val mockito_kotlin_version = "2.1.0"
-        const val coroutines_version = "1.3.2"
     }
 
     const val junit = "junit:junit:${Versions.junit_version}"
@@ -118,6 +117,4 @@ object TestLibs {
     const val mockito_inline = "org.mockito:mockito-inline:${Versions.mockito_version}"
     const val mockito_kotlin =
         "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockito_kotlin_version}"
-    const val coroutines_testing =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines_version}"
 }

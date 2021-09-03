@@ -62,5 +62,4 @@ dependencies {
     testImplementation(TestLibs.mockito_core)
     testImplementation(TestLibs.mockito_inline)
     testImplementation(TestLibs.mockito_kotlin)
-    testImplementation(TestLibs.coroutines_testing)
 }
