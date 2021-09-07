@@ -1,19 +1,13 @@
 package com.dindinn.app
 
-import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
-class DinDinnApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        MultiDex.install(this)
-    }
-
+class DinDinnApplication : MultiDexApplication() {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
